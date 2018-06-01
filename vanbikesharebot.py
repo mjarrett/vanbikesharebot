@@ -34,6 +34,7 @@ y = yesterday.strftime('%Y')
 rankdf = tddf[y].sum(1).sort_values(ascending=False).reset_index()
 rank = rankdf[rankdf['time']==yesterday].index[0] + 1
 
+# This is magic from Stack Overflow
 def ordinal(n):
     if n == 1:
         return ""
@@ -41,6 +42,12 @@ def ordinal(n):
 
 rankstring = ordinal(rank)
 
+
+# Decide whether a ranking gets an exclamation mark
+if rank < 20:
+    punct = '!'
+else:
+    punct = '.'
 
 # Get other stats
 status = mobi.get_status(workingdir)
@@ -57,12 +64,12 @@ station24hmin = a24df.idxmin()
 
 
 # Text string
-s ="""Yesterday there were approximately {} mobi trips. That's the {} most this year!
+s ="""Yesterday there were approximately {} mobi trips. That's the {} most this year{}
 Active stations: {}
 Active bikes: {}
 Most used station: {}
 Least used station: {}
-#bikeyvr""".format(total_trips,rankstring,status['stations'],status['bikes'],station24h,station24hmin)
+#bikeyvr""".format(total_trips,rankstring,punct,status['stations'],status['bikes'],station24h,station24hmin)
 
 
 
