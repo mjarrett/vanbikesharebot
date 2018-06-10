@@ -75,7 +75,8 @@ Least used station: {}
 
 # Upload images
 ims = ['/var/www/html/mobi/images/lastweek_hourly_yesterday.png',
-       '/var/www/html/mobi/images/lastmonth_daily_yesterday.png']
+       '/var/www/html/mobi/images/lastmonth_daily_yesterday.png',
+       '/var/www/html/mobi/images/station_map_yesterday.png']
 media_ids = [api.media_upload(x).media_id for x in ims]
 
 
@@ -83,6 +84,7 @@ media_ids = [api.media_upload(x).media_id for x in ims]
 if len(sys.argv)>1 and sys.argv[1] == '--test':
     print(s)
     print('-----------')
+    print(ims)
     print('{}/280 chars'.format(len(s)))
 else:
     # Update status
