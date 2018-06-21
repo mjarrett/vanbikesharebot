@@ -38,7 +38,7 @@ rank = rankdf[rankdf['time']==yesterday].index[0] + 1
 def ordinal(n):
     if n == 1:
         return ""
-    return "{}{}".format(n,"tsnrhtdd"[(n/10%10!=1)*(n%10<4)*n%10::4])
+    return " {}{}".format(n,"tsnrhtdd"[(n/10%10!=1)*(n%10<4)*n%10::4])
 
 rankstring = ordinal(rank)
 
@@ -64,7 +64,7 @@ station24hmin = a24df.idxmin()
 
 
 # Text string
-s ="""Yesterday there were approximately {} mobi trips. That's the {} most this year{}
+s ="""Yesterday there were approximately {} mobi trips. That's the{} most this year{}
 Active stations: {}
 Active bikes: {}
 Most used station: {}
