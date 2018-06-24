@@ -58,13 +58,15 @@ a24df = a24df[a24df>0]
 station24h = a24df.idxmax()
 station24hmin = a24df.idxmin()
 
+test = False
+if len(sys.argv)>2 and sys.argv[2] == '--test':
+    test = True
+
+if sys.argv[1] == '--summary':
 
 
-
-
-
-# Text string
-s ="""Yesterday there were approximately {} mobi trips. That's the{} most this year{}
+    # Text string
+    s ="""Yesterday there were approximately {} mobi trips. That's the{} most this year{}
 Active stations: {}
 Active bikes: {}
 Most used station: {}
@@ -73,19 +75,34 @@ Least used station: {}
 
 
 
-# Upload images
-ims = ['/var/www/html/mobi/images/lastweek_hourly_yesterday.png',
-       '/var/www/html/mobi/images/lastmonth_daily_yesterday.png',
-       '/var/www/html/mobi/images/station_map_yesterday.png']
-media_ids = [api.media_upload(x).media_id for x in ims]
+    # Upload images
+    ims = ['/var/www/html/mobi/images/lastweek_hourly_yesterday.png',
+           '/var/www/html/mobi/images/lastmonth_daily_yesterday.png',
+           '/var/www/html/mobi/images/station_map_yesterday.png']
+    media_ids = [api.media_upload(x).media_id for x in ims]
+
+    
+    if test:
+        print(s)
+        print('-----------')
+        print(ims)
+        print('{}/280 chars'.format(len(s)))        
+    else:
+        api.update_status(s, media_ids=media_ids)
 
 
+elif sys.argv[1] == '--ani':
+    s = "Watch yesterday's hourly @mobi_bikes station activity #bikeyvr"
+    ims = ['/var/www/html/mobi/images/station_ani_yesterday.png']
+    media_ids = [api.media_upload(x).media_id for x in ims]    
+    if test:
+        print(s)
+        print('-----------')
+        print(ims)
+        print('{}/280 chars'.format(len(s)))        
+    else:
+        api.update_status(s, media_ids=media_ids)
+ 
 
-if len(sys.argv)>1 and sys.argv[1] == '--test':
-    print(s)
-    print('-----------')
-    print(ims)
-    print('{}/280 chars'.format(len(s)))
-else:
-    # Update status
-    api.update_status(s, media_ids=media_ids)
+
+    
