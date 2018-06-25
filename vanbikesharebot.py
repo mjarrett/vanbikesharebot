@@ -92,8 +92,8 @@ Least used station: {}
 
 
 elif sys.argv[1] == '--ani':
-    s = "Watch yesterday's hourly @mobi_bikes station activity #bikeyvr"
-    ims = ['/var/www/html/mobi/images/station_ani_yesterday.png']
+    s = """Watch yesterday's hourly @mobi_bikes station activity #bikeyvr"""
+    ims = ['/var/www/html/mobi/images/station_ani_yesterday.gif']
     media_ids = [api.media_upload(x).media_id for x in ims]    
     if test:
         print(s)
