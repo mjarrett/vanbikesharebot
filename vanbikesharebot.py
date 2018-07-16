@@ -38,7 +38,7 @@ rank = rankdf[rankdf['time']==yesterday].index[0] + 1
 def ordinal(n):
     if n == 1:
         return ""
-    return " {}{}".format(n,"tsnrhtdd"[(n/10%10!=1)*(n%10<4)*n%10::4])
+    return " {}{}".format(n,"tsnrhtdd"[(n//10%10!=1)*(n%10<4)*n%10::4])
 
 rankstring = ordinal(rank)
 
