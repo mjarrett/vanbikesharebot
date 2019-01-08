@@ -3,10 +3,10 @@ from credentials import *
 import tweepy
 from datetime import date, timedelta
 import pandas as pd
-
 import sys
 sys.path.append("/home/msj/mobi/")
 import mobi
+
 # Mobi data directory
 workingdir = '/data/mobi/data/'
 
@@ -49,10 +49,14 @@ if rank < 20:
 else:
     punct = '.'
 
+
 # Get other stats
 status = mobi.get_status(workingdir)
 
-active_stations = sddf.loc[d,(sddf.loc[d] >= 0).values].index
+try:
+    active_stations = sddf.loc[d,(sddf.loc[d] >= 0).values].index
+except KeyError:
+    active_stations = sddf.iloc[-1,(sddf.iloc[-1] >=0).values].index
 a24df = ahdf.loc[d,active_stations].sum()
 a24df = a24df[a24df>0]
 station24h = a24df.idxmax()
