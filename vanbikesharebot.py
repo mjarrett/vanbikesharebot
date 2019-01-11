@@ -24,7 +24,7 @@ d = yesterday.strftime('%Y-%m-%d')
 thdf = mobi.load_csv(workingdir+'taken_hourly_df.csv')
 ahdf = mobi.load_csv(workingdir+'activity_hourly_df.csv')
 tddf = mobi.load_csv(workingdir+'taken_daily_df.csv')
-sddf = mobi.load_csv(workingdir+'stations_daily_df.csv')
+sdf = mobi.get_stationsdf(workingdir)
 
 total_trips = int(tddf.loc[d].sum())
 
@@ -53,14 +53,29 @@ else:
 # Get other stats
 status = mobi.get_status(workingdir)
 
-try:
-    active_stations = sddf.loc[d,(sddf.loc[d] >= 0).values].index
-except KeyError:
-    active_stations = sddf.iloc[-1,(sddf.iloc[-1] >=0).values].index
+active_stations = sdf.loc[sdf['active'],'name']
+
 a24df = ahdf.loc[d,active_stations].sum()
-a24df = a24df[a24df>0]
 station24h = a24df.idxmax()
 station24hmin = a24df.idxmin()
+
+maxstationtrips = int(a24df.max())
+minstationtrips = int(a24df.min())
+
+
+nstationsmax = len(a24df[a24df == maxstationtrips])
+nstationsmin = len(a24df[a24df == minstationtrips])
+
+
+
+if nstationsmax > 1:
+    max_others_string = "and {} others".format(nstationsmax)
+else: 
+    max_others_string = ""
+if nstationsmin > 1:
+    min_others_string = "and {} others".format(nstationsmin)
+else:
+    min_others_string = ""
 
 test = False
 if len(sys.argv)>2 and sys.argv[2] == '--test':
@@ -73,9 +88,12 @@ if sys.argv[1] == '--summary':
     s ="""Yesterday there were approximately {} mobi trips. That's the{} most this year{}
 Active stations: {}
 Active bikes: {}
-Most used station: {}
-Least used station: {}
-#bikeyvr""".format(total_trips,rankstring,punct,status['stations'],status['bikes'],station24h,station24hmin)
+Most used station: {} {} ({} trips)
+Least used station: {} {} ({} trips)
+#bikeyvr""".format(total_trips,rankstring,punct,
+                   status['stations'],status['bikes'],
+                   station24h,max_others_string,maxstationtrips,
+                   station24hmin,min_others_string,minstationtrips)
 
 
 
