@@ -69,11 +69,11 @@ nstationsmin = len(a24df[a24df == minstationtrips])
 
 
 if nstationsmax > 1:
-    max_others_string = "and {} others".format(nstationsmax)
+    max_others_string = "and {} others".format(nstationsmax-1)
 else: 
     max_others_string = ""
 if nstationsmin > 1:
-    min_others_string = "and {} others".format(nstationsmin)
+    min_others_string = "and {} others".format(nstationsmin-1)
 else:
     min_others_string = ""
 
