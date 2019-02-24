@@ -10,6 +10,7 @@ import mobi
 # Mobi data directory
 workingdir = '/data/mobi/data/'
 
+
 # Access and authorize our Twitter credentials from credentials.py
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
@@ -29,12 +30,22 @@ sdf = mobi.get_stationsdf(workingdir)
 total_trips = int(tddf.loc[d].sum())
 
 
+
 # Get nth rank in current year
 y = yesterday.strftime('%Y')
 rankdf = tddf[y].sum(1).sort_values(ascending=False).reset_index()
 rank = rankdf[rankdf['time']==yesterday].index[0] + 1
 
-# This is magic from Stack Overflow
+
+# Check that we still have data to the beginning of the year. If not tweet for help
+jan01 = y + '-01-01'
+trips_jan01 = int(tddf.loc[jan01].sum())
+if trips_jan01 < 1:
+    api.update_status("@mikejarrett_ Help! I'm not working properly today")
+    raise ValueError("We need data going back to January 1st for this to work")
+
+    
+    # This is magic from Stack Overflow
 def ordinal(n):
     if n == 1:
         return ""
